@@ -753,7 +753,18 @@ class RoIHeads(nn.Module):
                     if not t["keypoints"].dtype == torch.float32:
                         raise TypeError(f"target keypoints must of float type, instead got {t['keypoints'].dtype}")
 
-        if self.training:
+        """if self.training:
+            proposals, matched_idxs, labels, regression_targets = self.select_training_samples(proposals, targets)
+        else:
+            labels = None
+            regression_targets = None
+            matched_idxs = None"""
+
+        # Source - https://stackoverflow.com/a
+        # Posted by Soltius, modified by community. See post 'Timeline' for change history
+        # Retrieved 2025-12-03, License - CC BY-SA 4.0
+        
+        if targets is not None:
             proposals, matched_idxs, labels, regression_targets = self.select_training_samples(proposals, targets)
         else:
             labels = None
