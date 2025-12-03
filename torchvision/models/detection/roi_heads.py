@@ -787,6 +787,8 @@ class RoIHeads(nn.Module):
         else:
             boxes, scores, labels = self.postprocess_detections(class_logits, box_regression, proposals, image_shapes)
             num_images = len(boxes)
+            loss_classifier, loss_box_reg = fastrcnn_loss(class_logits, box_regression, labels, regression_targets)
+            losses = {"loss_classifier": loss_classifier, "loss_box_reg": loss_box_reg}
             for i in range(num_images):
                 result.append(
                     {
